@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Gallery</title>
+    <style>
+        #gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .photo {
+            margin: 2px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    Photo Gallery
+    <br>
+    <input type="text" id="searchInput" placeholder="Enter keyword">
+    <button onclick="searchPhotos()">Search</button>
+    <div id="gallery"></div>
+</body>
+<script>
+    function searchPhotos() {
+    const searchInput = document.getElementById("searchInput").value
+    fetch(`https://api.pexels.com/v1/search?query=${searchInput}&per_page=15`,{
+        headers : {
+            "Authorization" : "1BEkxs8xbX1q7lkeGAKuU5xfY9gtR8shx93bm1bzKNXKcBiZ9KBBX0oH"
+        }
+    })
+    .then(response => response.json())
+    .then(body => {
+        console.log(body)
+        const imageList = body.photos.map((photo) => (
+        `<img src="${photo.src.medium}" class="photo" alt="${photo.photographer}"/>`
+    ))
+
+        return imageList.join('')
+    })
+    .then(list => document.getElementById("gallery").innerHTML = list)
+    .catch((error => console.error('Error:', error)))
+}
+
+searchInput.addEventListener('keyup', function(event) {
+    if (event.key === 'Enter') {
+        searchPhotos();
+    }
+});
+    
+
+</script>
+</html>
