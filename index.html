@@ -41,7 +41,7 @@
         return imageList.join('')
     })
     .then(list => document.getElementById("gallery").innerHTML = list)
-    .catch((error => console.error('Error:', error)))
+    .catch((error => console.log('Error:', error)))
 }
 
 searchInput.addEventListener('keyup', function(event) {
